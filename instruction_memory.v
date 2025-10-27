@@ -5,7 +5,7 @@ module instruction_memory (
   reg [14:0] mem [0:15];  // Solo 16 posiciones
 
   initial begin
-    $readmemb("im.dat", mem);
+    $readmemb("contador_im.dat", mem);
   end
 
   integer i;
