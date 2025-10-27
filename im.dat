@@ -1,0 +1,22 @@
+// --- Programa contador de 15 a 0 ---
+// Cuenta desde 15 hasta 0 usando el registro A
+// El valor del contador se muestra en LEDs (binario) y display (decimal)
+
+// Inst 0: MOV A, 15    | Inicializar contador en 15
+000001000001111
+
+// Inst 1: CMP A, 0     | Comparar A con 0 (A - 0, setea flags)
+100111000000000
+
+// Inst 2: JLE 5        | Si A <= 0 (Z=1 o N=1), saltar a instrucción 5 (fin)
+101101000000101
+
+// Inst 3: SUB A, 1     | Decrementar A (A = A - 1)
+000101000000001
+
+// Inst 4: JMP 1        | Saltar de vuelta al loop (instrucción 1)
+101001000000001
+
+// Inst 5: JMP 5        | Loop infinito cuando llega a 0
+101001000000101
+
