@@ -1,7 +1,7 @@
 
 module computer (
     input clk,
-    output [7:0] regA_out_bus
+    output [7:0] output_led // output_led
 );
   
   wire [7:0]  pc_out_bus;
@@ -130,7 +130,7 @@ module computer (
       .status_out(status_out)
   );
 
-  // Exponer regA_out_bus como salida del módulo
-  assign regA_out_bus = regA_out_wire;
+ 
+  assign output_led = ~regA_out_wire; // output_led = --
 
 endmodule

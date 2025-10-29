@@ -1,4 +1,3 @@
-
 module data_memory (
     input  clk,
     input  W,               

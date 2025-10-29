@@ -2,46 +2,33 @@ module fpga_top (
     input clk,
     output [3:0] led,
     output [6:0] seg,
-    output [1:0] digit_sel
 );
+    wire [7:0] alu_out_bus;
+    reg clk_div;
 
-    reg [25:0] counter;
-    reg slow_clk;
-    reg [3:0] count_value;
     
-    always @(posedge clk) begin
-        counter <= counter + 1;
-        if (counter == 26'd12_500_000) begin  
-            slow_clk <= ~slow_clk;
-            counter <= 0;
-        end
-    end
-    
- 
-    always @(posedge slow_clk) begin
-        if (count_value == 4'd0)
-            count_value <= 4'd15;  
-        else
-            count_value <= count_value - 1; 
-    end
-    
-    initial begin
-        count_value = 4'd15;  
-        counter = 0;
-        slow_clk = 0;
-    end
-    
-    
-    assign led = {count_value[0], count_value[1], count_value[2], count_value[3]};
-    
-    
-    seven_seg_decoder decoder (
-        .value(count_value),
-        .segments(seg)
+    clock_divider clk_div (
+        .clk_in(clk),
+        .clk_out(clk_div)
     );
+
+   computer u_computer( // arreglar el error de sintaxis aquí
+    .alu_out_bus,
+    .clk(clk_div)
+   );
+
+    assign led = {alu_out_bus[0], alu_out_bus[1], alu_out_bus[2], alu_out_bus[3]};
+
+    wire[7:0] unidades_full = alu_out_bus %10;
+    wire [7:0] decenas_full = alu_out_bus / 10;
+    wire[3:0] unidades = unidades_full[3:0];
+    wire[3:0] decenas = decenas_full[3:0];
+
+    wire[6:0] seg_u, seg_d;
+
+    seven_seg_decoder decod_u (.value(unidades), .seg(seg_u));
+    seven_seg_decoder decod_d (.value(decenas), .seg(seg_d));
     
-    
-    assign digit_sel = 2'b11;
 
 endmodule
 
