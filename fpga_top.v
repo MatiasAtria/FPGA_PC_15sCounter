@@ -9,44 +9,43 @@ module fpga_top (
     reg slow_clk;
     reg [3:0] count_value;
     
-    // Divisor de clock: ~1Hz para ver el contador claramente
     always @(posedge clk) begin
         counter <= counter + 1;
-        if (counter == 26'd12_500_000) begin  // Ajustar según tu frecuencia
+        if (counter == 26'd12_500_000) begin  
             slow_clk <= ~slow_clk;
             counter <= 0;
         end
     end
     
-    // Contador descendente de 15 a 0
+ 
     always @(posedge slow_clk) begin
         if (count_value == 4'd0)
-            count_value <= 4'd15;  // Vuelve a 15 después de 0
+            count_value <= 4'd15;  
         else
-            count_value <= count_value - 1;  // Decrementa
+            count_value <= count_value - 1; 
     end
     
     initial begin
-        count_value = 4'd15;  // Inicia en 15
+        count_value = 4'd15;  
         counter = 0;
         slow_clk = 0;
     end
     
-    // LEDs muestran el valor en binario INVERTIDO (orden correcto)
+    
     assign led = {count_value[0], count_value[1], count_value[2], count_value[3]};
     
-    // Display muestra en hexadecimal (F, E, D, C, B, A, 9...0)
+    
     seven_seg_decoder decoder (
         .value(count_value),
         .segments(seg)
     );
     
-    // Ambos displays activos
+    
     assign digit_sel = 2'b11;
 
 endmodule
 
-// Decodificador de 7 segmentos para hexadecimal
+
 module seven_seg_decoder (
     input [3:0] value,
     output reg [6:0] segments

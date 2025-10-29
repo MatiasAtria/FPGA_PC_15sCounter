@@ -2,7 +2,7 @@ module instruction_memory (
   input  [7:0]  address,
   output [14:0] out
 );
-  reg [14:0] mem [0:15];  // Solo 16 posiciones
+  reg [14:0] mem [0:15];  
 
   initial begin
     $readmemb("contador_im.dat", mem);

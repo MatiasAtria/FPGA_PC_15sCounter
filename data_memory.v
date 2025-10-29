@@ -6,7 +6,7 @@ module data_memory (
     input  [7:0] data_in,  
     output [7:0] data_out   
 );
-    reg [7:0] mem [0:15];  // Solo 16 posiciones
+    reg [7:0] mem [0:15];  
 
     assign data_out = mem[address];
 
